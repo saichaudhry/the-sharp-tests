@@ -3,25 +3,15 @@
 // Results come from Kalshi: we look up the market for the team the player
 // took, and a finalized market's result is "yes" (that team won) or "no".
 import { db, handle, unwrap } from './_lib/db.js';
-import { requirePlayer, round2, STARTING_BANKROLL } from './_lib/player.js';
+import { requirePlayer, STARTING_BANKROLL } from './_lib/player.js';
 import { marketFor, resultOf } from './_lib/odds.js';
+import { grade } from './_lib/betting.js';
 import { loadProfile } from './me.js';
 
 const REFUND_AFTER_DAYS = 4; // never got a result (cancelled game): give the stake back
 
-// Profit on a winning bet at American odds.
-export function profitOn(stake, price) {
-  return price > 0 ? stake * (price / 100) : stake * (100 / -price);
-}
-
-// Turns a Kalshi result into our pick result. Exported so it's easy to test.
-export function grade(pick, result) {
-  const stake = Number(pick.stake);
-  if (result === 'yes') return { status: 'won', payout: round2(stake + profitOn(stake, pick.price)) };
-  if (result === 'no') return { status: 'lost', payout: 0 };
-  if (result === 'void') return { status: 'push', payout: stake };
-  return null;
-}
+// profitOn() and grade() moved to _lib/betting.js (HW9); re-exported so existing imports keep working.
+export { grade, profitOn } from './_lib/betting.js';
 
 export default handle({
   async POST(req) {
