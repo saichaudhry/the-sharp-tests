@@ -51,7 +51,7 @@ Known limit: `/api/panel` (four Claude calls per game) is only protected by a 10
 
 ## How I used AI
 
-Claude Code (Opus 5.5) did most of the building, and Claude is also the brain behind each handicapper. Full details are in [prompt_log.md](prompt_log.md). For HW9, Codex wrote the first test, reviewed the verifier results, added the final boundary regression, and prepared the documentation; Claude Code ran the Opus 5.5 and Sonnet 5.5 verifier experiments.
+Claude Code (Opus 5.5) did most of the building, and Claude is also the brain behind each handicapper. Full details are in [prompt_log.md](prompt_log.md).
 
 What I changed myself: the bet slip's quick-stake buttons (`QUICK` in `src/components/Slip.jsx`, now $5 / $20 / $50 / $200), edited on GitHub (commit `28b55e9`). I also designed the "Hype Meter" rule for Hype (end every pick with a 1-10 meter; 9-10 only for underdogs he loves, 3 or lower when gut and numbers disagree). That line went in through a Claude-assisted commit (`84d4da4`), and my follow-up web edit broke the file's closing backtick, which Claude fixed (`7f5602b`).
 
