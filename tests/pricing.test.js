@@ -80,7 +80,10 @@ test("resultOf passes through yes/no and calls anything else void", () => {
 
 // ---- liveCents ----
 
-test("liveCents converts the current price to whole cents, or null with no market", () => {
-  assert.equal(liveCents({ yes_bid_dollars: "0.4600", yes_ask_dollars: "0.4800" }), 48);
+// Fixed after break-it: the old version used an ask of exactly 48¢, so Math.floor
+// and Math.round gave the same answer and a round->floor bug slipped through.
+// 47.9¢ must round UP to 48.
+test("liveCents rounds the current price to the nearest cent, or null with no market", () => {
+  assert.equal(liveCents({ yes_bid_dollars: "0.4700", yes_ask_dollars: "0.4790" }), 48);
   assert.equal(liveCents(null), null);
 });
