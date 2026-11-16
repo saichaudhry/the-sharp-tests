@@ -1,0 +1,121 @@
+
+### Min stake boundary: < 1 -> <= 1
+api/_lib/betting.js: `stake < 1) return` -> `stake <= 1) return`
+  FAIL: checkStake accepts exactly $1 (the minimum is inclusive)
+    error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    +   error: 'Minimum stake is $1.'
+    -   stake: 1
+    expected:
+    actual:
+    error: 'Minimum stake is $1.'
+
+### Max stake boundary: > -> >=
+api/_lib/betting.js: `stake > MAX_STAKE)` -> `stake >= MAX_STAKE)`
+  FAIL: checkStake accepts exactly the $500 max but rejects $500.01
+    error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    +   error: 'Max stake is $500. Lou has limits.'
+    -   stake: 500
+    expected:
+    actual:
+    error: 'Max stake is $500. Lou has limits.'
+
+### Void refund: payout stake -> 0
+api/_lib/betting.js: `return { status: 'push', payout: stake }` -> `return { status: 'push', payout: 0 }`
+  FAIL: grade refunds the stake on a void market
+    error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    +   payout: 0,
+    -   payout: 25.5,
+    expected:
+    actual:
+
+### toAmerican boundary: >= 0.5 -> > 0.5
+api/_lib/pricing.js: `return p >= 0.5 ?` -> `return p > 0.5 ?`
+  FAIL: toAmerican treats exactly 50% as -100, not +100
+    error: |-
+    Expected values to be strictly equal:
+    expected: -100
+    actual: 100
+
+### resultOf: drop 'settled' status
+api/_lib/pricing.js: `['finalized', 'settled']` -> `['finalized']`
+  FAIL: resultOf passes through yes/no and calls anything else void
+    error: |-
+    Expected values to be strictly equal:
+    expected: 'no'
+    actual: ~
+
+### yesPrice: midpoint -> ask
+api/_lib/pricing.js: `(ask + bid) / 2` -> `ask`
+  FAIL: yesPrice uses the midpoint when the spread is wide (20 cents)
+    error: |-
+    Expected values to be strictly equal:
+    expected: 0.5
+    actual: 0.6
+
+### tickerDate: day -> month name
+api/_lib/pricing.js: `padStart(2, '0')}${m[3]}` -> `padStart(2, '0')}${m[2]}`
+  FAIL: tickerDate reads the date out of an event ticker
+  FAIL: tickerDate handles January (month index 0) and December
+    error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    + '202610OCT'
+    - '20261005'
+    expected: '20261005'
+    actual: '202610OCT'
+    error: |-
+
+### matchScore: weak match 1 -> 2
+api/_lib/pricing.js: `score += 1; // "Chicago WS"` -> `score += 2; // "Chicago WS"`
+  FAIL: matchScore gives only a weak 1 for a location-only match
+    error: |-
+    Expected values to be strictly equal:
+    expected: 1
+    actual: 2
+
+### liveCents: round -> floor
+api/_lib/pricing.js: `return p ? Math.round(p * 100) : null;` -> `return p ? Math.floor(p * 100) : null;`
+  FAIL: liveCents rounds the current price to the nearest cent, or null with no market
+    error: |-
+    Expected values to be strictly equal:
+    expected: 48
+    actual: 47
+
+### summarize ROI guard: > 0 -> >= 0
+api/_lib/betting.js: `roi: staked > 0 ?` -> `roi: staked >= 0 ?`
+  FAIL: summarize of no picks has zero ROI instead of dividing by zero
+    error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    +   roi: NaN,
+    -   roi: 0,
+    expected:
+    actual:
+
+### checkStake: drop cent rounding
+api/_lib/betting.js: `const stake = Math.round(Number(rawStake) * 100) / 100;` -> `const stake = Number(rawStake);`
+  FAIL: checkStake rounds to cents and reads the bankroll as a number
+    error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    +   stake: 12.345
+    -   stake: 12.35
+    expected:
+    actual:
+
+### profitOn: plus-odds formula inverted
+api/_lib/betting.js: `price > 0 ? stake * (price / 100)` -> `price > 0 ? stake * (100 / price)`
+  FAIL: a $100 winning bet at +150 earns $150 profit
+    error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    + 66.66666666666666
+    - 150
+    expected: 150
+    actual: 66.66666666666666
