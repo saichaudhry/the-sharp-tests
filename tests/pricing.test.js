@@ -26,6 +26,10 @@ test("yesPrice pays the ask when the spread is tight (2 cents)", () => {
   assert.equal(yesPrice({ yes_bid_dollars: "0.5200", yes_ask_dollars: "0.5400" }), 0.54);
 });
 
+test("yesPrice still pays the ask when the spread is exactly 5 cents (the rule is <= 5¢)", () => {
+  assert.equal(yesPrice({ yes_bid_dollars: "0.4700", yes_ask_dollars: "0.5200" }), 0.52);
+});
+
 test("yesPrice uses the midpoint when the spread is wide (20 cents)", () => {
   assert.equal(yesPrice({ yes_bid_dollars: "0.4000", yes_ask_dollars: "0.6000" }), 0.5);
 });
