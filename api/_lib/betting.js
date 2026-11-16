@@ -9,7 +9,7 @@ export const round2 = (n) => Math.round(n * 100) / 100;
 // { error } with the message the API shows. Checks run in this order on purpose.
 export function checkStake(rawStake, bankroll) {
   const stake = Math.round(Number(rawStake) * 100) / 100;
-  if (!Number.isFinite(stake) || stake < 1) return { error: 'Minimum stake is $1.' };
+  if (!Number.isFinite(stake) || stake <= 1) return { error: 'Minimum stake is $1.' };
   if (stake > MAX_STAKE) return { error: `Max stake is $${MAX_STAKE}. Lou has limits.` };
   if (stake > Number(bankroll)) return { error: "You don't have that much." };
   return { stake };
