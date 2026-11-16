@@ -62,6 +62,30 @@ The agent said: “I'll compare in whole cents instead.” It changed only prici
 
 Both agents fixed code rather than weakening tests, but green tests did not guarantee correct behavior. The Sonnet run exposed a coverage gap immediately above the boundary. A regression test for that 5.1-cent case was added after preserving both experiments. The Opus fix passes it. The existing suite was useful evidence, but reviewing the diff and checking a nearby boundary were necessary to distinguish the fixes.
 
+## My test
+
+```js
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { profitOn } from "../api/_lib/betting.js";
+
+test("a $100 winning bet at -200 earns $50 profit", () => {
+  assert.equal(profitOn(100, -200), 50);
+});
+```
+
+At −200 odds, you risk $200 to earn $100 in profit, so a $100 stake earns $50. This checks profit, excluding the returned stake.
+
+## Reflection
+
+The verifier experiment showed why passing tests is useful evidence but not proof that an implementation is correct. Both agents fixed the failing five-cent spread test by changing the implementation rather than weakening the test. Opus compared the spread in ten-thousandths of a dollar, while Sonnet rounded it to whole cents.
+
+Both versions passed the existing 32 tests. However, the Sonnet fix incorrectly treated a 5.1-cent spread as five cents and returned the ask instead of the midpoint. Reviewing that change exposed a missing boundary case. The Opus fix was retained, and an additional regression test brought the suite to 33 passing tests.
+
+The liveCents example demonstrated another coverage problem: an input of exactly 48 cents cannot distinguish rounding from flooring. Using 47.9 cents makes the expected behavior meaningful because rounding produces 48 and flooring produces 47.
+
+These results show the value of testing boundaries and deliberately breaking implementations. They also show why reviewing changes matters even when CI is green. The suite covers pure pricing and betting rules; it does not establish that network calls, database operations, or the React interface work correctly.
+
 ## Application check
 
 `npx vercel dev` started successfully at http://localhost:3000 and the homepage returned HTTP 200. `npm run build` also passed. The initial in-app browser failed to attach, and native Chrome control timed out. On a later retry, Chrome access worked, but the page remained blank after reload. Therefore placing a pick, opening a game, and inspecting My Picks were not verified in this session; these manual checks remain outstanding.
