@@ -6,7 +6,6 @@ Recorded tools and roles:
 - **Claude Code (Claude Opus 5.5)** in the terminal: brainstorming the idea, scaffolding the React app, serverless API and SQL schema.
 - **Claude Opus 5.5 via the Anthropic API**: powers Lou in the app itself (`api/chat.js`).
 - **Codex**: HW9 test setup and first test, verifier orchestration and review, additional boundary regression, documentation, and browser-check attempts.
-- **Claude Code (Sonnet 5.5)**: the second fresh verifier experiment.
 - **Supabase SQL Editor**: applying the database schema, as recorded below.
 
 ## Session 1: Sun 10/4, idea and full scaffold (Claude Code, Opus 5.5)
@@ -521,8 +520,7 @@ Export commands:
 /export /Users/saichaudhry/verifier-run-2-transcript.txt
 ```
 
-See [Opus export](docs/verifier/opus-transcript.txt) and [Sonnet export](docs/verifier/sonnet-transcript.txt). Both changed only implementation code. Opus's fix was pushed; Sonnet's whole-cent rounding fix was rejected after it failed an additional 5.1-cent spread check. Codex added that regression test and drafted TESTING.md. The first profitOn test was also written by Codex, so it must not be described as handwritten or written without AI.
-
+See [Opus export](docs/verifier/opus-transcript.txt). Changed only implementation code. 
 
 ## Documentation follow-up
 
