@@ -15,7 +15,10 @@ export function tickerDate(eventTicker) {
 export function yesPrice(m) {
   const bid = Number(m.yes_bid_dollars) || 0;
   const ask = Number(m.yes_ask_dollars) || 0;
-  if (bid > 0 && ask > 0) return ask - bid <= 0.05 ? ask : (ask + bid) / 2;
+  // Compare in 1/10000ths of a dollar (Kalshi's 4-decimal precision): in floats,
+  // 0.52 - 0.47 is 0.05000000000000004, which would wrongly fail "<= 0.05".
+  const spread = Math.round((ask - bid) * 10000);
+  if (bid > 0 && ask > 0) return spread <= 500 ? ask : (ask + bid) / 2;
   return Number(m.last_price_dollars) || null;
 }
 
