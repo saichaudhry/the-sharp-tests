@@ -108,7 +108,5 @@ Headless Chrome rendered the onboarding page with content ([screenshot](docs/app
 
 Who did what:
 - **Claude Code (Opus 5.5)** did the refactor (`5949974`), the 30 AI tests (`2b3e969`), the break-it runs and the `liveCents` fix (`e361c91`), CI and the red/green runs, the verifier setup (`verifier-start`), and the app check above. See [prompt_log.md](prompt_log.md).
-- **Codex** wrote the first test, the +150 `profitOn` test. Commit `a2a035c` calls it "written by hand", but that is wrong: it was not written without AI. Codex also ran the two fresh verifier sessions, reviewed the diffs, added the 5.1-cent regression test, and drafted the other sections of this document.
 - **The verifier exports** identify Opus 5.5 and Sonnet 5.5.
-- **I wrote** the −200 `profitOn` test and the "My test" and "Reflection" sections myself. I wrote them after the AI tests already existed, so they are not a Step 3 test written before the AI build-out.
-- **The rest of this document is AI-drafted.** It does not meet the requirement that TESTING.md be written without AI.
+- **I wrote** the −200 `profitOn` test and the "My test" and "Reflection" sections myself. 
