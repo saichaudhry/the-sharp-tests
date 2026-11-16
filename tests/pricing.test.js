@@ -34,6 +34,12 @@ test("yesPrice uses the midpoint when the spread is wide (20 cents)", () => {
   assert.equal(yesPrice({ yes_bid_dollars: "0.4000", yes_ask_dollars: "0.6000" }), 0.5);
 });
 
+// Added after reviewing the Sonnet verifier run: rounding to whole cents
+// would incorrectly classify this 5.1-cent spread as tight.
+test("yesPrice uses the midpoint for a spread just above 5 cents", () => {
+  assert.equal(yesPrice({ yes_bid_dollars: "0.4700", yes_ask_dollars: "0.5210" }), 0.4955);
+});
+
 test("yesPrice falls back to the last trade when one side of the book is empty", () => {
   assert.equal(yesPrice({ yes_bid_dollars: "0.0000", yes_ask_dollars: "0.6000", last_price_dollars: "0.5700" }), 0.57);
 });
