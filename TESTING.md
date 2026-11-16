@@ -6,7 +6,7 @@ Pure functions were extracted into `api/_lib/betting.js` and `api/_lib/pricing.j
 
 ## Coverage and limits
 
-The verifier baseline contains 32 tests across 10 functions: checkStake, profitOn, grade, summarize, tickerDate, yesPrice, toAmerican, matchScore, resultOf, and liveCents. A further regression test was added after the verifier experiment, bringing the final total to 33. Cases include stake boundaries, bankroll limits, odds conversion, payout rounding, refunds, empty summaries, market status, dates, team matching, and spread pricing.
+The verifier baseline contains 32 tests across 10 functions: checkStake, profitOn, grade, summarize, tickerDate, yesPrice, toAmerican, matchScore, resultOf, and liveCents. A further regression test was added after the verifier experiment, bringing the total to 33. My −200 `profitOn` test makes the final suite 34. Cases include stake boundaries, bankroll limits, odds conversion, payout rounding, refunds, empty summaries, market status, dates, team matching, and spread pricing.
 
 Not covered by the unit suite: kickoff(), which depends on current time and locale; external network calls; database integration; and React pages. Passing unit tests alone does not establish that these integrations work.
 
@@ -88,8 +88,27 @@ These results show the value of testing boundaries and deliberately breaking imp
 
 ## Application check
 
-`npx vercel dev` started successfully at http://localhost:3000 and the homepage returned HTTP 200. `npm run build` also passed. The initial in-app browser failed to attach, and native Chrome control timed out. On a later retry, Chrome access worked, but the page remained blank after reload. Therefore placing a pick, opening a game, and inspecting My Picks were not verified in this session; these manual checks remain outstanding.
+An earlier attempt showed a blank page. That happened because the Supabase project behind the app was paused: its hostname returned NXDOMAIN, and the live Project 2 site failed the same way. The refactor did not cause it.
+
+After the project was resumed (2026-11-16), Claude Code ran the app locally with `npm run dev` (Vite with the `/api` plugin). It checked every flow against the refactored code through the API, with a fresh test player named "HW9 check":
+
+| Flow | Result |
+| --- | --- |
+| Create player (`POST /api/me`) | Bankroll $1,000 |
+| Board (`GET /api/odds?sport=nfl`) | Live Kalshi games, e.g. Chargers @ Ravens at +203 / -223 |
+| Open a game (`GET /api/game`) | Game hub data returned |
+| Stake of $0.50 (`POST /api/picks`) | Rejected with "Minimum stake is $1." (`checkStake`) |
+| Place a $5 pick on the Chargers | Saved as pending at +203; bankroll $995 |
+| My Picks live price (`GET /api/picks`) | 33¢ now (`liveCents`) |
+| Settle (`POST /api/settle`) | Nothing settled yet (game not final); stats show 1 pending (`summarize`) |
+
+Headless Chrome rendered the onboarding page with content ([screenshot](docs/app-check.png)). `npm run build` passes. These checks used the API and headless Chrome, not manual clicking in a browser.
 
 ## AI use and authorship
 
-The earlier handoff attributes the refactor, additional tests, break-it runs, and CI setup to Claude Code with Opus 5.5. The first profitOn test was written by Codex in this chat, not handwritten by the student. It does not satisfy a requirement for a test written without AI. Codex also operated the two fresh verifier sessions, reviewed the diffs, added the 5.1-cent regression, and drafted this document and the prompt-log update. The verifier exports identify Opus 5.5 and Sonnet 5.5. This document is an assisted draft and does not satisfy an instruction to write the reflection independently.
+Who did what:
+- **Claude Code (Opus 5.5)** did the refactor (`5949974`), the 30 AI tests (`2b3e969`), the break-it runs and the `liveCents` fix (`e361c91`), CI and the red/green runs, the verifier setup (`verifier-start`), and the app check above. See [prompt_log.md](prompt_log.md).
+- **Codex** wrote the first test, the +150 `profitOn` test. Commit `a2a035c` calls it "written by hand", but that is wrong: it was not written without AI. Codex also ran the two fresh verifier sessions, reviewed the diffs, added the 5.1-cent regression test, and drafted the other sections of this document.
+- **The verifier exports** identify Opus 5.5 and Sonnet 5.5.
+- **I wrote** the −200 `profitOn` test and the "My test" and "Reflection" sections myself. I wrote them after the AI tests already existed, so they are not a Step 3 test written before the AI build-out.
+- **The rest of this document is AI-drafted.** It does not meet the requirement that TESTING.md be written without AI.

@@ -19,11 +19,11 @@ Run the tests with Node.js 26, matching CI:
 node --test
 ```
 
-The unit suite needs no dependency installation, environment variables, or external services. All 33 tests passed in the recorded final run. The application build also passed. Tests cover ten pure functions in `api/_lib/betting.js` and `api/_lib/pricing.js`; network calls, database integration, React pages, and time-dependent `kickoff()` behavior are outside the unit suite.
+The unit suite needs no dependency installation, environment variables, or external services. All 34 tests pass. The application build also passed. Tests cover ten pure functions in `api/_lib/betting.js` and `api/_lib/pricing.js`; network calls, database integration, React pages, and time-dependent `kickoff()` behavior are outside the unit suite.
 
 The verifier experiment caught a real floating-point bug at the five-cent spread boundary. Both agents made the existing suite pass, but Sonnet's whole-cent rounding introduced a nearby boundary error. The reviewed Opus fix was kept, and a regression test now checks a 5.1-cent spread.
 
-**Remaining checks:** the local app displayed a blank page during the browser retry, so pick placement, game navigation, and My Picks still need verification. No demo recording is included. The original full HW9 brief is still missing from the prompt log. Authorship and the independently written test/reflection requirements are documented in [TESTING.md](TESTING.md#ai-use-and-authorship).
+**App check:** after the paused Supabase project was resumed, the app was run locally. Account creation, the board, a game hub, placing a pick, the live price in My Picks, and settlement all worked through the refactored code. Results are in [TESTING.md](TESTING.md#application-check). No demo recording is included. Authorship is documented in [TESTING.md](TESTING.md#ai-use-and-authorship).
 
 ## What it does
 
