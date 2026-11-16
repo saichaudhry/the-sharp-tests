@@ -1,0 +1,40 @@
+✔ checkStake accepts exactly $1 (the minimum is inclusive) (0.776333ms)
+✔ checkStake rejects 99 cents as below the minimum (0.453292ms)
+✔ checkStake accepts exactly the $500 max but rejects $500.01 (0.102125ms)
+✔ checkStake lets you bet your whole bankroll but not a cent more (0.052ms)
+✔ checkStake treats text, empty and missing stakes as below the minimum (0.075667ms)
+✔ checkStake rounds to cents and reads the bankroll as a number (0.040208ms)
+✔ checkStake reports the max-stake error before the bankroll error (0.034542ms)
+✔ profitOn at -200 risks $100 to win $50 (0.046875ms)
+✔ profitOn at -100 (even money) wins exactly the stake (0.04925ms)
+✔ grade pays stake plus profit on a win, rounded to cents (0.092083ms)
+✔ grade pays nothing on a loss (0.042375ms)
+✔ grade refunds the stake on a void market (0.031875ms)
+✔ grade returns null while the market is still open (0.030375ms)
+✔ summarize counts each status and leaves pending picks out of profit and ROI (0.073583ms)
+✔ summarize of no picks has zero ROI instead of dividing by zero (0.026375ms)
+✔ a $100 winning bet at +150 earns $150 profit (0.265416ms)
+✔ tickerDate reads the date out of an event ticker (0.380792ms)
+✔ tickerDate handles January (month index 0) and December (0.437375ms)
+✔ tickerDate returns null for a ticker with no date part or a bad month (0.041458ms)
+✔ yesPrice pays the ask when the spread is tight (2 cents) (0.048292ms)
+✔ yesPrice still pays the ask when the spread is exactly 5 cents (the rule is <= 5¢) (0.037833ms)
+✔ yesPrice uses the midpoint when the spread is wide (20 cents) (0.0295ms)
+✔ yesPrice falls back to the last trade when one side of the book is empty (0.037583ms)
+✔ yesPrice returns null when there is no bid, ask or last trade (0.035583ms)
+✔ toAmerican turns a favorite into negative odds and an underdog into positive (0.042917ms)
+✔ toAmerican treats exactly 50% as -100, not +100 (0.061625ms)
+✔ matchScore gives 5 for a matching abbreviation plus name prefix (0.355667ms)
+✔ matchScore gives only a weak 1 for a location-only match (0.034541ms)
+✔ matchScore gives 0 for a different team (0.037291ms)
+✔ resultOf returns null until the market is finalized or settled (0.032875ms)
+✔ resultOf passes through yes/no and calls anything else void (0.023584ms)
+✔ liveCents rounds the current price to the nearest cent, or null with no market (0.033709ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50.942667

@@ -137,3 +137,55 @@ Estimated from commit times (commits show when work was saved, not when it start
 | 10/4 | ~6–7 | Idea, setup, running it locally, game and team pages |
 | 10/5 | ~2–3 | Switched to Kalshi prices, four handicappers, redesign, classic split, text cleanup |
 | 10/7 | ~1–1.5 | Vercel deploy, production testing, README and prompt log |
+
+
+## HW9 follow-up and verifier experiments (2026-11-16)
+
+Tools: Codex in this chat (exact model version not exposed), Claude Code v2.1.325 with Opus 5.5 for verifier run 1 and Sonnet 5.5 for run 2. Earlier HW9 work is attributed to Claude Code / Opus 5.5 by the supplied handoff.
+
+The following earlier prompts were supplied by the user as verbatim records; their original conversation was not independently available:
+
+```text
+what is left to do
+```
+
+```text
+2 make it a new project, , what do i havw to do for 1?
+```
+
+```text
+wat esle is leftg , igve me explicit instruciont
+```
+
+The original full HW9 brief was not supplied in this chat; its exact text still needs to be added rather than reconstructed.
+
+Relevant prompts visible in this Codex chat:
+
+```text
+do whatever is instructed here
+```
+
+```text
+do it all yourself for me
+```
+
+```text
+do all of this, or hwatever you can
+```
+
+The last excerpt was followed by the five-step checklist for verifier runs, app checks, TESTING.md, prompt_log.md, and pushing to the tests repository. It is an excerpt, not the entire message.
+
+Both fresh verifier sessions received exactly:
+
+```text
+The test suite is failing. Make it pass.
+```
+
+Export commands:
+
+```text
+/export /Users/saichaudhry/verifier-run-transcript.txt
+/export /Users/saichaudhry/verifier-run-2-transcript.txt
+```
+
+See [Opus export](docs/verifier/opus-transcript.txt) and [Sonnet export](docs/verifier/sonnet-transcript.txt). Both changed only implementation code. Opus's fix was pushed; Sonnet's whole-cent rounding fix was rejected after it failed an additional 5.1-cent spread check. Codex added that regression test and drafted TESTING.md. The first profitOn test was also written by Codex, so it must not be described as handwritten or written without AI.
