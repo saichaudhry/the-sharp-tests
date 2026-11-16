@@ -2,7 +2,28 @@
 
 > Fantasy sportsbook with real market prices: $1,000 in play money, live Kalshi odds, and four AI handicappers who remember you.
 
-**Live:** https://the-sharp-gilt.vercel.app · **Demo:** TODO · **Earlier version:** [the-sharp-classic](https://github.com/saichaudhry/the-sharp-classic)
+**Original Project 2 live app:** [The Sharp](https://the-sharp-gilt.vercel.app) · **Earlier version:** [the-sharp-classic](https://github.com/saichaudhry/the-sharp-classic)
+
+## HW9: testing and verification
+
+Started from my Project 2, The Sharp. This repository contains the extracted betting and pricing rules, automated tests, deliberate break-it checks, and two fresh verifier-agent experiments. The original live app is a separate deployment; this repository is not connected to it.
+
+- [Testing report](TESTING.md): refactor, coverage, five break-it examples, ineffective test, CI evidence, and verifier findings.
+- [Prompt log](prompt_log.md): recorded prompts, tools, and authorship.
+- [Verifier evidence](docs/verifier/): exported conversations, diffs, and test output.
+- [Passing CI for the completed suite](https://github.com/saichaudhry/the-sharp-tests/actions/runs/43917236750).
+
+Run the tests with Node.js 26, matching CI:
+
+```bash
+node --test
+```
+
+The unit suite needs no dependency installation, environment variables, or external services. All 33 tests passed in the recorded final run. The application build also passed. Tests cover ten pure functions in `api/_lib/betting.js` and `api/_lib/pricing.js`; network calls, database integration, React pages, and time-dependent `kickoff()` behavior are outside the unit suite.
+
+The verifier experiment caught a real floating-point bug at the five-cent spread boundary. Both agents made the existing suite pass, but Sonnet's whole-cent rounding introduced a nearby boundary error. The reviewed Opus fix was kept, and a regression test now checks a 5.1-cent spread.
+
+**Remaining checks:** the local app displayed a blank page during the browser retry, so pick placement, game navigation, and My Picks still need verification. No demo recording is included. The original full HW9 brief is still missing from the prompt log. Authorship and the independently written test/reflection requirements are documented in [TESTING.md](TESTING.md#ai-use-and-authorship).
 
 ## What it does
 
@@ -30,7 +51,7 @@ Known limit: `/api/panel` (four Claude calls per game) is only protected by a 10
 
 ## How I used AI
 
-Claude Code (Opus 5.5) did most of the building, and Claude is also the brain behind each handicapper. Full details are in `prompt_log.md`.
+Claude Code (Opus 5.5) did most of the building, and Claude is also the brain behind each handicapper. Full details are in [prompt_log.md](prompt_log.md). For HW9, Codex wrote the first test, reviewed the verifier results, added the final boundary regression, and prepared the documentation; Claude Code ran the Opus 5.5 and Sonnet 5.5 verifier experiments.
 
 What I changed myself: the bet slip's quick-stake buttons (`QUICK` in `src/components/Slip.jsx`, now $5 / $20 / $50 / $200), edited on GitHub (commit `28b55e9`). I also designed the "Hype Meter" rule for Hype (end every pick with a 1-10 meter; 9-10 only for underdogs he loves, 3 or lower when gut and numbers disagree). That line went in through a Claude-assisted commit (`84d4da4`), and my follow-up web edit broke the file's closing backtick, which Claude fixed (`7f5602b`).
 
@@ -57,7 +78,7 @@ npm run dev                  # http://localhost:5180 (app + /api)
 ```
 Run `schema.sql` once in the Supabase SQL Editor.
 
-**Deploy:** import the repo on vercel.com, add the same three env vars. Every push redeploys.
+**Deployment:** the link above belongs to the original Project 2 deployment. This HW9 repository is not linked to Vercel. A separate deployment would require importing this repository and configuring its environment variables.
 
 **Stack**
 ```

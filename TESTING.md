@@ -33,6 +33,7 @@ The workflow runs `node --test` on pushes and pull requests, using Node 26 witho
 - [Earlier passing run](https://github.com/saichaudhry/the-sharp-tests/actions/runs/43825988714)
 - [Earlier failing run](https://github.com/saichaudhry/the-sharp-tests/actions/runs/43825935183)
 - [Failing verifier baseline](https://github.com/saichaudhry/the-sharp-tests/actions/runs/43826068222)
+- [Passing completed suite, including the extra regression](https://github.com/saichaudhry/the-sharp-tests/actions/runs/43917236750)
 - [Passing Opus fix](https://github.com/saichaudhry/the-sharp-tests/actions/runs/43917014275)
 
 ## Verifier experiment
@@ -63,7 +64,7 @@ Both agents fixed code rather than weakening tests, but green tests did not guar
 
 ## Application check
 
-`npx vercel dev` started successfully at http://localhost:3000 and the homepage returned HTTP 200. `npm run build` also passed. The in-app browser failed to attach, and native Chrome control timed out. Therefore placing a pick, opening a game, and inspecting My Picks were not verified in this session; these manual checks remain outstanding.
+`npx vercel dev` started successfully at http://localhost:3000 and the homepage returned HTTP 200. `npm run build` also passed. The initial in-app browser failed to attach, and native Chrome control timed out. On a later retry, Chrome access worked, but the page remained blank after reload. Therefore placing a pick, opening a game, and inspecting My Picks were not verified in this session; these manual checks remain outstanding.
 
 ## AI use and authorship
 
